@@ -4,6 +4,10 @@
 #define READER_QUEUE_SIZE 16
 #define DEFAULT_PORT 20220
 
+static void dtls_event_loop(void *arg);
+static int dtls_init(dtls_context_t *ctx);
+static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg);
+
 msg_t reader_queue[READER_QUEUE_SIZE], msg;
 
 static gnrc_netreg_entry_t server = GNRC_NETREG_ENTRY_INIT_PID(

@@ -1,3 +1,4 @@
+#include "net/gnrc/ipv6.h"
 #include "sock_types.h"
 #include "dtls.h"
 
@@ -5,7 +6,7 @@
 #define DEFAULT_PORT 20220
 
 static void dtls_event_loop(void *arg);
-static int dtls_init(dtls_context_t *ctx);
+static int dtls_setup(dtls_context_t *ctx);
 static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg);
 
 msg_t reader_queue[READER_QUEUE_SIZE], msg;
@@ -16,7 +17,7 @@ static gnrc_netreg_entry_t server = GNRC_NETREG_ENTRY_INIT_PID(
 char server_thread_stack[THREAD_STACKSIZE_MAIN
         + THREAD_EXTRA_STACKSIZE_PRINTF];
 
-static void dtls_event_loop(void *arg)
+void *dtls_event_loop(void *arg)
 {
     assert(arg);
 
@@ -25,8 +26,10 @@ static void dtls_event_loop(void *arg)
 
     while(1) {
         msg_receive(msg);
-        dtls_read_msg(ctx, msg);
+        dtls_read_msg(ctx, (gnrc_pktsnip_t *) msg.content.ptr);
     }
+
+    dtls_free_context(dtls_context);
 }
 
 static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
@@ -54,7 +57,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
     dtls_handle_message(ctx, &sock->session, msg->data, 
 }
 
-static int dtls_init(dtls_context_t *ctx)
+static int dtls_setup(dtls_context_t *ctx)
 {
     assert(ctx);
 
@@ -72,7 +75,7 @@ static int dtls_init(dtls_context_t *ctx)
         return -1;
     }
 
-    dtls_init();
+    dtls_setup();
 
     server.target.pid = thread_create(server_thread_stack,
             sizeof(server_thread_stack), THREAD_PRIORITY_MAIN - 1,

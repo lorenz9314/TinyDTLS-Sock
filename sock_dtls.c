@@ -1,6 +1,7 @@
 #include "net/gnrc/ipv6.h"
 #include "sock_types.h"
 #include "dtls.h"
+#include "dtls_debug.h"
 
 #define READER_QUEUE_SIZE 16
 #define DEFAULT_PORT 20220
@@ -54,7 +55,8 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
     sck->session.port = byteorder_ntohs(udp->src_port);
     sck->session.addr = hdr->src;
 
-    dtls_handle_message(ctx, &sock->session, msg->data, 
+    dtls_handle_message(ctx, &sock->session, msg->data,
+            (unsigned int) msg->size); 
 }
 
 static int dtls_setup(dtls_context_t *ctx)
@@ -85,7 +87,7 @@ static int dtls_setup(dtls_context_t *ctx)
 
     if (gnrc_netreg_register(GNRC_NETTYPE_UDP, &server)) {
         DEBUG("Netreg registration failed, exiting.\n");
-        return -1
+        return -1;
     }
 
     DEBUG("Netreg registration successfull, Using port %" PRIu32 "\n", port);

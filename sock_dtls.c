@@ -1,5 +1,3 @@
-#include "dtls.h"
-#include "session.h"
 #include "sock_types.h"
 
 #define READER_QUEUE_SIZE 16
@@ -17,12 +15,12 @@ static void dtls_event_loop(void *arg)
 {
     assert(arg);
 
-    dtls_context_t *ctx = (dtls_context_t) arg;
+    dtls_context_t *ctx = (dtls_context_t *) arg;
     msg_t *msg;
 
     while(1) {
         msg_receive(msg);
-        dtls_read_msg(ctx, msg)
+        dtls_read_msg(ctx, msg);
     }
 }
 
@@ -82,11 +80,9 @@ static int dtls_init(dtls_context_t *ctx)
         return -1
     }
 
-    DEBUG("Netreg registration successfull, Using port %" PRIu32 "\n", port)
+    DEBUG("Netreg registration successfull, Using port %" PRIu32 "\n", port);
 
     dtls_set_log_level(DTLS_LOG_DEBUG);
-
-
 }
 
 int test_fuction(int i)

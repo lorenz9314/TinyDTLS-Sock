@@ -1,3 +1,7 @@
+#include "dtls.h"
+#include "session.h"
+#include "sock_types.h"
+
 #define READER_QUEUE_SIZE 16
 #define DEFAULT_PORT 20220
 

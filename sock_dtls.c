@@ -66,10 +66,10 @@ static int dtls_setup(dtls_context_t *ctx)
     uint32_t port = (uint32_t) DEFAULT_PORT;
 
     static dtls_handler_t handler = {
-        .write = send_to_peer,
-        .read  = read_from_peer,
+        .write = NULL, // send_to_peer,
+        .read  = NULL, // read_from_peer,
         .event = NULL,
-        .get_psk_info = peer_get_psk_info
+        .get_psk_info = NULL // peer_get_psk_info
     };
 
     if (server.target.pid != KERNEL_PID_UNDEF) {

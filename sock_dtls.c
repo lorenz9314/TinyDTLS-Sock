@@ -30,7 +30,7 @@ void *dtls_event_loop(void *arg)
         dtls_read_msg(ctx, (gnrc_pktsnip_t *) msg.content.ptr);
     }
 
-    dtls_free_context(dtls_context);
+    dtls_free_context(ctx);
 }
 
 static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
@@ -55,7 +55,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
     sck->session.port = byteorder_ntohs(udp->src_port);
     sck->session.addr = hdr->src;
 
-    dtls_handle_message(ctx, &sock->session, msg->data,
+    dtls_handle_message(ctx, &sck->session, msg->data,
             (unsigned int) msg->size); 
 }
 
@@ -63,7 +63,7 @@ static int dtls_setup(dtls_context_t *ctx)
 {
     assert(ctx);
 
-    uint32_t port = (uint32_t) DEFAULT_PORT
+    uint32_t port = (uint32_t) DEFAULT_PORT;
 
     static dtls_handler_t handler = {
         .write = send_to_peer,
@@ -77,7 +77,7 @@ static int dtls_setup(dtls_context_t *ctx)
         return -1;
     }
 
-    dtls_setup();
+    dtls_init();
 
     server.target.pid = thread_create(server_thread_stack,
             sizeof(server_thread_stack), THREAD_PRIORITY_MAIN - 1,

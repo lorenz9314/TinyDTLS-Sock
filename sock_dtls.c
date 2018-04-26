@@ -2,11 +2,11 @@
 #include "sock_types.h"
 #include "dtls.h"
 #include "dtls_debug.h"
+#include "net/gnrc/udp.h"
 
 #define READER_QUEUE_SIZE 16
 #define DEFAULT_PORT 20220
 
-static void dtls_event_loop(void *arg);
 static int dtls_setup(dtls_context_t *ctx);
 static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg);
 
@@ -23,10 +23,10 @@ void *dtls_event_loop(void *arg)
     assert(arg);
 
     dtls_context_t *ctx = (dtls_context_t *) arg;
-    msg_t *msg;
+    msg_t msg;
 
     while(1) {
-        msg_receive(msg);
+        msg_receive(&msg);
         dtls_read_msg(ctx, (gnrc_pktsnip_t *) msg.content.ptr);
     }
 

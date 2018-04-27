@@ -38,12 +38,12 @@ void *dtls_event_loop(void *arg)
 
 static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
 {
-    sock_udp *sck;
+    sock_udp_t *sck;
     gnrc_pktsnip_t *tmp;
     ipv6_hdr_t *hdr;
     udp_hdr_t *udp;
 
-    sck = (sock_udp *) ctx->app;
+    sck = (sock_udp_t *) ctx->app;
 
     tmp = gnrc_pktsnip_search_type(msg, GNRC_NETTYPE_IPV6);
     hdr = (ipv6_hdr_t *) tmp->data;

@@ -37,7 +37,7 @@ void *dtls_event_loop(void *arg)
 
 static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
 {
-    sock_udp_ep_t *sck;
+    sock_udp *sck;
     gnrc_pktsnip_t *tmp;
     ipv6_hdr_t *hdr;
     udp_hdr_t *udp;

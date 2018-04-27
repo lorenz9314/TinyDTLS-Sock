@@ -63,7 +63,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
 
 static int dtls_setup(dtls_context_t *ctx)
 {
-/**    assert(ctx);
+    assert(ctx);
 
     uint32_t port = (uint32_t) DEFAULT_PORT;
 
@@ -74,7 +74,6 @@ static int dtls_setup(dtls_context_t *ctx)
         .get_psk_info = NULL // peer_get_psk_info
     };
 
-**/
     (void) handler;    
     (void) ctx;
 
@@ -82,7 +81,7 @@ static int dtls_setup(dtls_context_t *ctx)
         DEBUG("Server already running, exiting.\n");
         return -1;
     }
-/**
+
     dtls_init();
 
     server.target.pid = thread_create(server_thread_stack,
@@ -99,7 +98,8 @@ static int dtls_setup(dtls_context_t *ctx)
     DEBUG("Netreg registration successfull, Using port %" PRIu32 "\n", port);
 
     dtls_set_log_level(DTLS_LOG_DEBUG);
-    **/
+
+    return 0;
 }
 
 int test_fuction(int i)

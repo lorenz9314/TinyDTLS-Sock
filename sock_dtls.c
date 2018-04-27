@@ -3,12 +3,13 @@
 #include "dtls.h"
 #include "dtls_debug.h"
 #include "net/gnrc/udp.h"
-#include "net/sock/udp.h"
 #include "debug.h"
 
 #define READER_QUEUE_SIZE 16
 #define DEFAULT_PORT 20220
 #define ENABLE_DEBUG (0)
+
+typedef sock_udp sock_udp_t;
 
 static int dtls_setup(dtls_context_t *ctx);
 static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg);

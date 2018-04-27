@@ -63,7 +63,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
 
 void test_function(void)
 {
-    dtls_setup(void);
+    dtls_setup(NULL);
 }
 
 static int dtls_setup(dtls_context_t *ctx)

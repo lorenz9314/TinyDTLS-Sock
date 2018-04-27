@@ -74,6 +74,7 @@ static int dtls_setup(dtls_context_t *ctx)
         .get_psk_info = NULL // peer_get_psk_info
     };
 
+**/
     (void) handler;    
     (void) ctx;
 
@@ -81,7 +82,7 @@ static int dtls_setup(dtls_context_t *ctx)
         DEBUG("Server already running, exiting.\n");
         return -1;
     }
-
+/**
     dtls_init();
 
     server.target.pid = thread_create(server_thread_stack,

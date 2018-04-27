@@ -3,6 +3,7 @@
 #include "dtls.h"
 #include "dtls_debug.h"
 #include "net/gnrc/udp.h"
+#include "net/sock/udp.h"
 #include "debug.h"
 
 #define READER_QUEUE_SIZE 16
@@ -57,7 +58,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
     sck->session.port = byteorder_ntohs(udp->src_port);
     sck->session.addr = hdr->src;
 
-    dtls_handle_message(ctx, &sck->session, msg->data,
+    dtls_handle_message(ctx, sck->session, msg->data,
             (unsigned int) msg->size); 
 }
 

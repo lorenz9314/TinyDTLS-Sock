@@ -74,6 +74,9 @@ static int dtls_setup(dtls_context_t *ctx)
         .get_psk_info = NULL // peer_get_psk_info
     };
 
+    (void) handler;    
+    (void) ctx;
+
     if (server.target.pid != KERNEL_PID_UNDEF) {
         DEBUG("Server already running, exiting.\n");
         return -1;

@@ -73,11 +73,11 @@ struct sock_ip {
  */
 struct sock_udp {
     gnrc_sock_reg_t reg;                /**< netreg info */
-    sock_udp_ep_t local;               /**< local end-point */
-    sock_udp_ep_t remote;              /**< remote end-point */
+    sock_udp_ep_t local;                /**< local end-point */
+    sock_udp_ep_t remote;               /**< remote end-point */
     uint16_t flags;                     /**< option flags */
-    dtls_session_t session;             /**< dtls session struct */
-    dtls_context_t ctx;                 /**< dtls context struct */
+    session_t session;                  /**< dtls session struct */
+    context_t ctx;                      /**< dtls context struct */
     char *psk;                          /**< dtls pre shared key*/
 };
 

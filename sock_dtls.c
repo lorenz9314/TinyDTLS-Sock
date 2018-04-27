@@ -63,7 +63,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
 
 static int dtls_setup(dtls_context_t *ctx)
 {
-    assert(ctx);
+/**    assert(ctx);
 
     uint32_t port = (uint32_t) DEFAULT_PORT;
 
@@ -98,6 +98,7 @@ static int dtls_setup(dtls_context_t *ctx)
     DEBUG("Netreg registration successfull, Using port %" PRIu32 "\n", port);
 
     dtls_set_log_level(DTLS_LOG_DEBUG);
+    **/
 }
 
 int test_fuction(int i)

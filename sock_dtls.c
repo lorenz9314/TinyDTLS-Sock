@@ -42,7 +42,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
     ipv6_hdr_t *hdr;
     udp_hdr_t *udp;
 
-    sck = ctx->app;
+    sck = (sock_udp *) ctx->app;
 
     tmp = gnrc_pktsnip_search_type(msg, GNRC_NETTYPE_IPV6);
     hdr = (ipv6_hdr_t *) tmp->data;

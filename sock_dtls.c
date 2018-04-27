@@ -57,7 +57,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
     sck->session.port = byteorder_ntohs(udp->src_port);
     sck->session.addr = hdr->src;
 
-    dtls_handle_message(ctx, sck->session, msg->data,
+    dtls_handle_message(ctx, &sck->session, msg->data,
             (unsigned int) msg->size); 
 }
 

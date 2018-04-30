@@ -1,3 +1,3 @@
-INCLUDES += $(PKGDIRBASE)/tiny-dtls
+INCLUDES += $(PKG_BBUILDDIR)/tiny-dtls
 
 include $(RIOTBASE)/Makefile.base

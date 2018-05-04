@@ -1,10 +1,14 @@
-#include "net/gnrc/ipv6.h"
-#include "include/sock_types.h"
 #include "net/gnrc.h"
+#include "net/gnrc/ipv6.h"
+#include "net/gnrc/netif.h"
+#include "net/gnrc/netif/hdr.h"
+#include "net/gnrc/udp.h"
+
 #include "dtls.h"
 #include "dtls_debug.h"
-#include "net/gnrc/udp.h"
 #include "debug.h"
+
+#include "include/sock_types.h"
 
 #define READER_QUEUE_SIZE 16
 #define DEFAULT_PORT 20220

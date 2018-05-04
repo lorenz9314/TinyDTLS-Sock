@@ -1,6 +1,6 @@
 #include "net/gnrc/ipv6.h"
 #include "include/sock_types.h"
-#include "gnrc.h"
+#include "net/gnrc.h"
 #include "dtls.h"
 #include "dtls_debug.h"
 #include "net/gnrc/udp.h"

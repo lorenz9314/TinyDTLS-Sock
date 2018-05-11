@@ -128,7 +128,7 @@ void sock_udp_close(sock_udp_t *sock)
         DEBUG("Server not running, exiting.\n");
     }
 
-    dtls_free_context(sock->ctx);
+    dtls_free_context(&sock->ctx);
 
     gnrc_netreg_unregister(GNRC_NETTYPE_UDP, &server);
     server.target.pid = KERNEL_PID_UNDEF;

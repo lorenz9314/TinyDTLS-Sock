@@ -37,7 +37,7 @@ void *dtls_event_loop(void *arg)
         dtls_read_msg(ctx, (gnrc_pktsnip_t *) msg.content.ptr);
     }
 
-    dtls_free_context(ctx);
+    // dtls_free_context(ctx); most likely dead code...
 }
 
 static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
@@ -63,7 +63,7 @@ static void dtls_read_msg(dtls_context_t *ctx, gnrc_pktsnip_t *msg)
     sck->session.addr = hdr->src;
 
     dtls_handle_message(ctx, &sck->session, msg->data,
-            (unsigned int) msg->size); 
+            (unsigned int) msg->size);
 }
 
 void test_function(void)
@@ -84,7 +84,7 @@ static int dtls_setup(dtls_context_t *ctx)
         .get_psk_info = NULL // peer_get_psk_info
     };
 
-    (void) handler;    
+    (void) handler;
     (void) ctx;
 
     if (server.target.pid != KERNEL_PID_UNDEF) {
@@ -111,6 +111,68 @@ static int dtls_setup(dtls_context_t *ctx)
 
     return 0;
 }
+
+int sock_udp_create(sock_udp_t *sock, const sock_udp_ep_t *local,
+        const sock_udp_ep_t *remote, uint16_t flags)
+{
+}
+
+void sock_udp_close(sock_udp_t *sock)
+{
+    if (server.target.pid == KERNEL_PID_UNDEF) {
+        DEBUG("Server not running, exiting.\n");
+        return -1;
+    }
+
+    dtls_free_context(sock->ctx);
+
+    gnrc_netreg_unregister(GNRC_NETTYPE_UDP, &server);
+    server.target.pid = KERNEL_PID_UNDEF;
+
+    DEBUG("Stopped server.\n");
+}
+
+
+int sock_udp_get_local(sock_udp_t *sock, sock_udp_ep_t *ep)
+{
+    if (sock == NULL || ep == NULL) {
+        return -1;
+    }
+
+    if (sock->local == NULL) {
+        return -EADDRNOTAVAIL;
+    }
+
+    ep = sock->local;
+
+    return 0;
+}
+
+int sock_udp_get_remote(sock_udp_t *sock, sock_udp_ep_t *ep)
+{
+    if (sock == NULL || ep == NULL) {
+        return -1;
+    }
+
+    if (sock->remote == NULL) {
+        return -ENOTCONN;
+    }
+
+    ep = sock->remote;
+
+    return 0
+}
+
+ssize_t sock_udp_recv(sock_udp_t *sock, void *data, size_t max_len,
+       	                           uint32_t timeout, sock_udp_ep_t *remote)
+{
+}
+
+ssize_t sock_udp_send(sock_udp_t *sock, const void *data, size_t len,
+		                        const sock_udp_ep_t *remote)
+{
+}
+
 
 int test_fuction(int i)
 {

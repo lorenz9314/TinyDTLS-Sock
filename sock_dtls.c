@@ -160,17 +160,29 @@ int sock_udp_get_remote(sock_udp_t *sock, sock_udp_ep_t *ep)
 
     ep = sock->remote;
 
-    return 0
+    return 0;
 }
 
 ssize_t sock_udp_recv(sock_udp_t *sock, void *data, size_t max_len,
        	                           uint32_t timeout, sock_udp_ep_t *remote)
 {
+    (void) sock;
+    (void) data;
+    (void) max_len;
+    (void) timeout;
+    (void) remote;
+
+    return 0;
 }
 
 ssize_t sock_udp_send(sock_udp_t *sock, const void *data, size_t len,
 		                        const sock_udp_ep_t *remote)
 {
+    (void) sock;
+    (void) data;
+    (void) len;
+    (void) remote;
+    return 0;
 }
 
 

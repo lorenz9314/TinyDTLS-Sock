@@ -115,13 +115,17 @@ static int dtls_setup(dtls_context_t *ctx)
 int sock_udp_create(sock_udp_t *sock, const sock_udp_ep_t *local,
         const sock_udp_ep_t *remote, uint16_t flags)
 {
+    (void) sock;
+    (void) local;
+    (void) remote;
+    (void) flags;
+    return 0;
 }
 
 void sock_udp_close(sock_udp_t *sock)
 {
     if (server.target.pid == KERNEL_PID_UNDEF) {
         DEBUG("Server not running, exiting.\n");
-        return -1;
     }
 
     dtls_free_context(sock->ctx);
@@ -135,32 +139,28 @@ void sock_udp_close(sock_udp_t *sock)
 
 int sock_udp_get_local(sock_udp_t *sock, sock_udp_ep_t *ep)
 {
-    if (sock == NULL || ep == NULL) {
-        return -1;
-    }
+    assert(sock && ep);
 
-    if (sock->local == NULL) {
+    if (sock->local.family == AF_UNSPEC) {
         return -EADDRNOTAVAIL;
     }
 
-    ep = sock->local;
+    memcpy(ep, &sock->local, sizeof(sock_udp_ep_t));
 
-    return 0;
+	return 0;
 }
 
 int sock_udp_get_remote(sock_udp_t *sock, sock_udp_ep_t *ep)
 {
-    if (sock == NULL || ep == NULL) {
-        return -1;
-    }
+    assert(sock && ep);
 
-    if (sock->remote == NULL) {
+    if (sock->remote.family == AF_UNSPEC) {
         return -ENOTCONN;
     }
 
-    ep = sock->remote;
+    memcpy(ep, &sock->remote, sizeof(sock_udp_ep_t));
 
-    return 0;
+	return 0;
 }
 
 ssize_t sock_udp_recv(sock_udp_t *sock, void *data, size_t max_len,

@@ -77,7 +77,7 @@ struct sock_udp {
     sock_udp_ep_t remote;               /**< remote end-point */
     uint16_t flags;                     /**< option flags */
     session_t session;                  /**< dtls session struct */
-    dtls_context_t ctx;                      /**< dtls context struct */
+    dtls_context_t ctx;                 /**< dtls context struct */
     char *psk;                          /**< dtls pre shared key*/
 };
 

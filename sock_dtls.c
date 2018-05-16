@@ -2,6 +2,7 @@
 #include "dtls.h"
 #include "dtls_debug.h"
 
+#include "net/af.h"
 #include "net/gnrc.h"
 #include "net/gnrc/nettype.h"
 #include "net/gnrc/ipv6.h"
@@ -115,10 +116,43 @@ static int dtls_setup(dtls_context_t *ctx)
 int sock_udp_create(sock_udp_t *sock, const sock_udp_ep_t *local,
         const sock_udp_ep_t *remote, uint16_t flags)
 {
-    (void) sock;
-    (void) local;
-    (void) remote;
-    (void) flags;
+	assert(sock);
+    assert(local == NULL || local->port != 0);
+    assert(remote == NULL || remote->port != 0);
+
+    if ((local != NULL) && (remote != NULL) &&
+        (local->netif != SOCK_ADDR_ANY_NETIF) &&
+        (remote->netif != SOCK_ADDR_ANY_NETIF) &&
+        (local->netif != remote->netif)) {
+        return -EINVAL;
+	}
+
+	memset(&sock->local, 0, sizeof(sock_udp_ep_t));
+	if (local != NULL) {
+		if (local->family != AF_INET6) {
+            return -EAFNOSUPPORT;
+        }
+
+		memcpy(&sock->local, local, sizeof(sock_udp_ep_t));
+	}
+
+    memset(&sock->remote, 0, sizeof(sock_udp_ep_t));
+    if (remote != NULL) {
+        if (remote->family != AF_INET6) {
+            return -EAFNOSUPPORT;
+        }
+
+        uint8_t *ptr = (uint8_t *)&remote->addr;
+        for (uint8_t i = 0; i < sizeof(remote->addr); i++) {
+            if (ptr[i] != 0) {
+                return -EINVAL;
+            }
+        }
+
+        memcpy(&sock->remote, remote, sizeof(sock_udp_ep_t))
+    }
+
+
     return 0;
 }
 
@@ -135,7 +169,6 @@ void sock_udp_close(sock_udp_t *sock)
 
     DEBUG("Stopped server.\n");
 }
-
 
 int sock_udp_get_local(sock_udp_t *sock, sock_udp_ep_t *ep)
 {
@@ -183,10 +216,4 @@ ssize_t sock_udp_send(sock_udp_t *sock, const void *data, size_t len,
     (void) len;
     (void) remote;
     return 0;
-}
-
-
-int test_fuction(int i)
-{
-    return i + 1;
 }
